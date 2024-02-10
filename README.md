@@ -54,25 +54,21 @@ By split the message into equal-sized parts, encrypting each part twice, and dis
 
 sequenceDiagram
     participant ClientA as Client A
-    participant EdgeServerA as Edge Server (Group A)
-    participant CoreServerA as Core Server (Group A)
-    participant EdgeServerB as Edge Server (Group B)
-    participant CoreServerB as Core Server (Group B)
+    participant EdgeServersA as Edge Servers (Group A)
+    participant CoreServersA as Core Servers (Group A)
     participant ClientB as Client B
-    
+
     Note over ClientA,ClientB: Key Exchange and Synchronization
-    
-    ClientA->>+EdgeServerA: Encrypted Message Part 1...20
-    EdgeServerA->>+CoreServerA: Distribute Message Parts
-    CoreServerA->>+EdgeServerB: Redistribute Parts to Group B
-    EdgeServerB->>+CoreServerB: Redistribute Parts within Group B
-    CoreServerB->>-EdgeServerB: Sync & Prepare for Client B
-    
+
+    ClientA->>+EdgeServersA: Encrypted Message Parts 1...20
+    EdgeServersA->>+CoreServersA: Distribute Message Parts
+    CoreServersA-->>-EdgeServersA: Synchronize & Prepare Parts
+
     Note over ClientB: Client B Requests Messages
-    
-    ClientB->>+EdgeServerB: Request Messages
-    EdgeServerB->>-ClientB: Send Encrypted Message Parts
-    
+
+    ClientB->>+EdgeServersA: Request Messages
+    EdgeServersA->>-ClientB: Send Encrypted Message Parts
+
     Note over ClientB: Client B Assembles & Decrypts Message
 
 
